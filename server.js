@@ -6,6 +6,7 @@ const app = express();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(express.static('public'));
 
 const { animals  } = require('./data/animals');
 
@@ -71,13 +72,25 @@ function validateAnimal(animal){
     return true;
 }
 
+app.get('/', (rea, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
 app.get('/api/animals', (req, res) => {
     let results = animals;
     if(req.query){
         results = filterByQuery(req.query, results);
     }
     res.json(results);
-})
+});
 
 app.get('/api/animals/:id', (req, res) => {
     const result = findById(req.params.id, animals);
@@ -87,6 +100,10 @@ app.get('/api/animals/:id', (req, res) => {
         res.send(404);
     }
     
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
 })
 
 app.post('/api/animals', (req, res) => {
@@ -98,7 +115,7 @@ app.post('/api/animals', (req, res) => {
         const animal = createNewAnimal(req.body, animals);
         res.json(animal);    
     }
-})
+});
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
