@@ -119,6 +119,16 @@
         "goofy"
       ],
       "id": "11"
+    },
+    {
+      "name": "Manny",
+      "species": "Capybara",
+      "diet": "herbivore",
+      "personalityTraits": [
+        "hungry",
+        "anxious"
+      ],
+      "id": "12"
     }
   ]
 }
